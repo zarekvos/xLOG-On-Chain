@@ -3,6 +3,7 @@ import { Link, useLocation } from 'wouter';
 import { WalletConnect } from './wallet-connect';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
+import logoPath from '@assets/image_1758797917332.png';
 
 export function Navigation() {
   const [location] = useLocation();
@@ -36,10 +37,12 @@ export function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2" data-testid="link-home">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">C</span>
-            </div>
+          <Link href="/" className="flex items-center space-x-3" data-testid="link-home">
+            <img 
+              src={logoPath} 
+              alt="ChainBlog Logo" 
+              className="w-8 h-8 object-contain"
+            />
             <span className="text-xl font-bold text-foreground">ChainBlog</span>
           </Link>
 

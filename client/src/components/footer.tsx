@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Github, Twitter } from 'lucide-react';
+import logoPath from '@assets/image_1758797917332.png';
 
 export function Footer() {
   const footerLinks = {
@@ -31,10 +32,12 @@ export function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-primary to-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">C</span>
-              </div>
+            <div className="flex items-center space-x-3 mb-4">
+              <img 
+                src={logoPath} 
+                alt="ChainBlog Logo" 
+                className="w-8 h-8 object-contain"
+              />
               <span className="text-xl font-bold">ChainBlog</span>
             </div>
             <p className="text-gray-400 leading-relaxed">
