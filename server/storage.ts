@@ -30,7 +30,7 @@ export class MemStorage implements IStorage {
         title: "The Future of Decentralized Content",
         content: "Exploring how blockchain technology is revolutionizing content creation and ownership in the digital age. This comprehensive analysis covers the technical foundations, economic implications, and social impact of decentralized publishing platforms.",
         excerpt: "Exploring how blockchain technology is revolutionizing content creation and ownership in the digital age...",
-        author: "0xAbcd...EF12",
+        author: "0xAbcd1234567890abcdef1234567890abcdefEF12",
         chainId: "1", // Ethereum
         transactionHash: "0x1234567890abcdef1234567890abcdef12345678",
         createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
@@ -40,7 +40,7 @@ export class MemStorage implements IStorage {
         title: "Getting Started with Web3 Blogging",
         content: "A comprehensive guide to publishing your first blog post on the blockchain using ChainBlog. Learn about wallet setup, network selection, gas optimization, and content strategies for decentralized publishing.",
         excerpt: "A comprehensive guide to publishing your first blog post on the blockchain using ChainBlog...",
-        author: "0x1234...5678",
+        author: "0x1234567890abcdef1234567890abcdef12345678",
         chainId: "8453", // Base
         transactionHash: "0xabcdef1234567890abcdef1234567890abcdef12",
         createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
@@ -50,7 +50,7 @@ export class MemStorage implements IStorage {
         title: "Why Creators Love Blockchain",
         content: "Discover how content creators are leveraging blockchain technology to monetize their work and maintain creative control. This post explores various monetization strategies, community building techniques, and the economics of creator-owned content.",
         excerpt: "Discover how content creators are leveraging blockchain technology to monetize their work...",
-        author: "0x9ABC...def0",
+        author: "0x9ABCdef0123456789ABCdef0123456789ABCdef0",
         chainId: "56", // BNB Chain
         transactionHash: "0xdef1234567890abcdef1234567890abcdef123456",
         createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 1 week ago
