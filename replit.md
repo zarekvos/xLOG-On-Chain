@@ -72,3 +72,11 @@ Preferred communication style: Simple, everyday language.
 - **esbuild**: Fast JavaScript bundler for server-side code
 - **tsx**: TypeScript execution for development
 - **postcss**: CSS processing with Tailwind CSS
+
+## Recent Changes
+
+### September 25, 2025
+- **Color Scheme Update**: Complete website redesign using white, black, and orange color palette to match logo branding
+- **Social Media Integration**: Added user's Twitter (https://x.com/zarekvos) and GitHub (https://github.com/zarekvos) links to footer
+- **Runtime Error Fixes**: Resolved all social features runtime errors and navigation issues
+- **Accessibility Improvements**: Achieved WCAG AA compliance with proper contrast ratios throughout the design

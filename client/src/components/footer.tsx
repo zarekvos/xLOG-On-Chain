@@ -15,8 +15,8 @@ export function Footer() {
       { name: 'Support', href: '#support' },
     ],
     Community: [
-      { name: 'GitHub', href: 'https://github.com', icon: Github },
-      { name: 'Twitter', href: 'https://twitter.com', icon: Twitter },
+      { name: 'GitHub', href: 'https://github.com/zarekvos', icon: Github },
+      { name: 'Twitter', href: 'https://x.com/zarekvos', icon: Twitter },
       { name: 'Discord', href: 'https://discord.com' },
     ],
   };
