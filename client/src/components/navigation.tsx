@@ -20,9 +20,9 @@ export function Navigation() {
   }, []);
 
   const navLinks = [
-    { href: '#features', label: 'Features' },
-    { href: '#blogs', label: 'Blogs' },
-    { href: '#docs', label: 'Docs' },
+    { href: '/features', label: 'Features' },
+    { href: '/blogs', label: 'Blogs' },
+    { href: '/docs', label: 'Docs' },
   ];
 
   return (
@@ -49,14 +49,16 @@ export function Navigation() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.href}
                 href={link.href}
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className={`text-muted-foreground hover:text-foreground transition-colors ${
+                  location === link.href ? 'text-foreground font-semibold' : ''
+                }`}
                 data-testid={`link-${link.label.toLowerCase()}`}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
 
@@ -82,15 +84,17 @@ export function Navigation() {
           <div className="md:hidden border-t border-border bg-white/95 backdrop-blur-md">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.href}
                   href={link.href}
-                  className="block px-3 py-2 text-muted-foreground hover:text-foreground transition-colors"
+                  className={`block px-3 py-2 text-muted-foreground hover:text-foreground transition-colors ${
+                    location === link.href ? 'text-foreground font-semibold' : ''
+                  }`}
                   onClick={() => setIsMobileMenuOpen(false)}
                   data-testid={`mobile-link-${link.label.toLowerCase()}`}
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
               <div className="px-3 py-2">
                 <WalletConnect />

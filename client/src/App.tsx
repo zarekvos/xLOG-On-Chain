@@ -7,6 +7,9 @@ import { WagmiProvider } from 'wagmi';
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { config } from './lib/wagmi';
 import Home from "@/pages/home";
+import Features from "@/pages/features";
+import Blogs from "@/pages/blogs";
+import Docs from "@/pages/docs";
 import NotFound from "@/pages/not-found";
 
 import '@rainbow-me/rainbowkit/styles.css';
@@ -15,6 +18,9 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/features" component={Features} />
+      <Route path="/blogs" component={Blogs} />
+      <Route path="/docs" component={Docs} />
       <Route component={NotFound} />
     </Switch>
   );
