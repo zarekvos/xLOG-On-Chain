@@ -23,6 +23,7 @@ export function Navigation() {
     { href: '/features', label: 'Features' },
     { href: '/blogs', label: 'Blogs' },
     { href: '/docs', label: 'Docs' },
+    { href: '/dashboard', label: 'Dashboard' },
   ];
 
   return (

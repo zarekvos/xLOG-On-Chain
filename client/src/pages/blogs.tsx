@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Navigation } from '@/components/navigation';
 import { Footer } from '@/components/footer';
+import { AdvancedDiscovery } from '@/components/advanced-discovery';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,12 +9,14 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { BlogPost } from '@shared/schema';
 import { formatDistanceToNow } from 'date-fns';
-import { Search, Filter, TrendingUp, Clock, User, ExternalLink } from 'lucide-react';
+import { Search, Filter, TrendingUp, Clock, User, ExternalLink, Sparkles } from 'lucide-react';
 import { useState } from 'react';
+import { useLocation } from 'wouter';
 
 export default function Blogs() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedChain, setSelectedChain] = useState<string | null>(null);
+  const [, setLocation] = useLocation();
 
   const { data: blogPosts, isLoading } = useQuery<BlogPost[]>({
     queryKey: ['/api/blog-posts'],
@@ -62,45 +65,9 @@ export default function Blogs() {
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-primary/5 to-transparent pointer-events-none" />
-        
-        <motion.div
-          className="absolute w-80 h-80 bg-gradient-to-br from-purple-500/20 to-primary/20 rounded-full blur-3xl"
-          style={{ top: '20%', left: '10%' }}
-          animate={{
-            scale: [1, 1.3, 1],
-            x: [0, 50, 0],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-        />
-
-        <div className="max-w-7xl mx-auto relative z-10">
-          <motion.div
-            className="text-center mb-20"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="text-6xl md:text-8xl font-bold text-foreground mb-8 leading-tight">
-              Discover
-              <br />
-              <span className="bg-gradient-to-r from-purple-600 to-primary bg-clip-text text-transparent">
-                Amazing
-              </span>
-              <br />
-              Content
-            </h1>
-            <p className="text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Explore the latest stories from our community of Web3 creators and thought leaders
-            </p>
-          </motion.div>
-        </div>
+      {/* Enhanced Discovery Section */}
+      <section className="pt-20">
+        <AdvancedDiscovery />
       </section>
 
       {/* Search and Filter Section */}
@@ -271,6 +238,7 @@ export default function Blogs() {
                     <Button
                       variant="ghost"
                       className="text-primary hover:text-primary/80 font-medium p-0 h-auto group/btn"
+                      onClick={() => setLocation(`/post/${post.id}`)}
                       data-testid={`button-read-more-${post.id}`}
                     >
                       Read Full Article

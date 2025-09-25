@@ -10,6 +10,8 @@ import Home from "@/pages/home";
 import Features from "@/pages/features";
 import Blogs from "@/pages/blogs";
 import Docs from "@/pages/docs";
+import Dashboard from "@/pages/dashboard";
+import PostDetail from "@/pages/post-detail";
 import NotFound from "@/pages/not-found";
 
 import '@rainbow-me/rainbowkit/styles.css';
@@ -21,6 +23,8 @@ function Router() {
       <Route path="/features" component={Features} />
       <Route path="/blogs" component={Blogs} />
       <Route path="/docs" component={Docs} />
+      <Route path="/dashboard" component={Dashboard} />
+      <Route path="/post/:id" component={PostDetail} />
       <Route component={NotFound} />
     </Switch>
   );
