@@ -1,11 +1,13 @@
 import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 import { mainnet, base, bsc, avalanche } from 'viem/chains';
 import { defineChain } from 'viem';
-import ethIcon from '@assets/eth.png';
-import baseIcon from '@assets/base.png';
-import bnbIcon from '@assets/bnb.png';
-import avaxIcon from '@assets/avax.png';
-import plasmaIcon from '@assets/plasma.png';
+
+// Chain icons - using public path for proper Vercel deployment
+const ethIcon = '/eth.png';
+const baseIcon = '/base.png';
+const bnbIcon = '/bnb.png';
+const avaxIcon = '/avax.png';
+const plasmaIcon = '/plasma.png';
 
 // Define Plasma chain configuration using defineChain for better RainbowKit integration
 const plasma = defineChain({
