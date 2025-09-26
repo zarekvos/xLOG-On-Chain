@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { supportedChains } from '@/lib/wagmi';
+import { useAlert } from '@/components/ui/alert-service';
 import { ArrowLeft, Send, Eye, Save, Link as ChainIcon, ImageIcon, Tag } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
 import { useAccount } from 'wagmi';
@@ -16,6 +17,7 @@ import { useAccount } from 'wagmi';
 export default function CreateBlog() {
   const [, setLocation] = useLocation();
   const { address, isConnected } = useAccount();
+  const alert = useAlert();
   
   const [blogData, setBlogData] = useState({
     title: '',
@@ -33,23 +35,70 @@ export default function CreateBlog() {
     setBlogData(prev => ({ ...prev, [field]: value }));
   };
 
+  const handleSaveDraft = () => {
+    if (!blogData.title.trim()) {
+      alert.warning('Please enter a title for your blog post');
+      return;
+    }
+    
+    alert.success('Draft saved successfully!', {
+      description: 'Your blog post has been saved as a draft'
+    });
+  };
+
   const handlePublish = async () => {
+    // Validation
     if (!isConnected) {
-      alert('Please connect your wallet first');
+      alert.error('Wallet not connected', {
+        description: 'Please connect your wallet to publish your blog',
+        action: {
+          label: 'Connect Wallet',
+          onClick: () => console.log('Open wallet connection modal')
+        }
+      });
+      return;
+    }
+
+    if (!blogData.title.trim()) {
+      alert.warning('Title is required', {
+        description: 'Please enter a title for your blog post'
+      });
+      return;
+    }
+
+    if (!blogData.content.trim()) {
+      alert.warning('Content is required', {
+        description: 'Please write some content for your blog post'
+      });
+      return;
+    }
+
+    if (!blogData.chainId) {
+      alert.warning('Please select a blockchain network', {
+        description: 'Choose which network to publish your blog on'
+      });
       return;
     }
     
     setIsPublishing(true);
+    
+    // Show transaction pending
+    alert.blockchain.transactionPending('0x1234567890abcdef...');
+    
     // Simulate publishing process
     setTimeout(() => {
       setIsPublishing(false);
-      alert('Blog published successfully!');
-      setLocation('/blogs');
-    }, 2000);
-  };
-
-  const handleSaveDraft = () => {
-    alert('Draft saved locally!');
+      
+      // Get selected chain name
+      const selectedChain = supportedChains.find(chain => chain.id.toString() === blogData.chainId);
+      
+      // Show success with blockchain-specific message
+      alert.blockchain.blogPublished(selectedChain?.name);
+      
+      setTimeout(() => {
+        setLocation('/blogs');
+      }, 2000);
+    }, 3000);
   };
 
   const tags = blogData.tags.split(',').filter(tag => tag.trim()).map(tag => tag.trim());

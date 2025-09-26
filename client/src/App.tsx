@@ -3,6 +3,7 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AlertProvider } from "@/components/ui/alert-service";
 import { WagmiProvider } from 'wagmi';
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { config } from './lib/wagmi';
@@ -16,6 +17,7 @@ import PostDetail from "@/pages/post-detail";
 import ApiReferences from "@/pages/api-references";
 import Privacy from "@/pages/privacy";
 import Terms from "@/pages/terms";
+import AlertDemo from "@/pages/alert-demo";
 import NotFound from "@/pages/not-found";
 
 // Documentation pages
@@ -52,6 +54,7 @@ function Router() {
       <Route path="/api-references" component={ApiReferences} />
       <Route path="/privacy" component={Privacy} />
       <Route path="/terms" component={Terms} />
+      <Route path="/alert-demo" component={AlertDemo} />
       
       {/* Documentation routes */}
       <Route path="/docs/quick-start" component={QuickStartGuide} />
@@ -81,8 +84,10 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider>
           <TooltipProvider>
-            <Toaster />
-            <Router />
+            <AlertProvider>
+              <Toaster />
+              <Router />
+            </AlertProvider>
           </TooltipProvider>
         </RainbowKitProvider>
       </QueryClientProvider>

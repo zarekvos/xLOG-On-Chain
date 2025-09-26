@@ -90,6 +90,29 @@ export default function NetworkSelection() {
         ],
         bestFor: 'Eco-conscious creators, speed-critical applications',
         recommended: false
+      },
+      'Plasma': {
+        symbol: 'XPL',
+        color: 'from-purple-500 to-violet-600',
+        gasPrice: 'Ultra Low ($0.001-0.01)',
+        speed: 'Very Fast (1-3 sec)',
+        security: 'High',
+        description: 'High-performance Layer 1 blockchain optimized for scalability and efficiency',
+        pros: [
+          'Native Layer 1 blockchain architecture',
+          'Extremely low transaction fees',
+          'Fast block confirmation times',
+          'High throughput and scalability',
+          'Full smart contract support',
+          'Energy-efficient consensus mechanism'
+        ],
+        cons: [
+          'Newer blockchain with growing ecosystem',
+          'Limited DeFi protocols compared to Ethereum',
+          'Smaller developer community initially'
+        ],
+        bestFor: 'Cost-effective publishing, high-frequency content creation, sustainable blockchain usage',
+        recommended: false
       }
     };
     return networkData[chainName as keyof typeof networkData];
@@ -103,11 +126,11 @@ export default function NetworkSelection() {
   }));
 
   const comparisonMetrics = [
-    { metric: 'Transaction Cost', ethereum: 'High', base: 'Very Low', bnb: 'Low', avalanche: 'Low' },
-    { metric: 'Speed', ethereum: 'Slow', base: 'Fast', bnb: 'Fast', avalanche: 'Very Fast' },
-    { metric: 'Security', ethereum: 'Highest', base: 'High', bnb: 'High', avalanche: 'High' },
-    { metric: 'Ecosystem Size', ethereum: 'Largest', base: 'Growing', bnb: 'Large', avalanche: 'Medium' },
-    { metric: 'Decentralization', ethereum: 'Highest', base: 'Medium', bnb: 'Medium', avalanche: 'High' }
+    { metric: 'Transaction Cost', ethereum: 'High', base: 'Very Low', bnb: 'Low', avalanche: 'Low', plasma: 'Ultra Low' },
+    { metric: 'Speed', ethereum: 'Slow', base: 'Fast', bnb: 'Fast', avalanche: 'Very Fast', plasma: 'Instant' },
+    { metric: 'Security', ethereum: 'Highest', base: 'High', bnb: 'High', avalanche: 'High', plasma: 'High' },
+    { metric: 'Ecosystem Size', ethereum: 'Largest', base: 'Growing', bnb: 'Large', avalanche: 'Medium', plasma: 'Growing' },
+    { metric: 'Decentralization', ethereum: 'Highest', base: 'Medium', bnb: 'Medium', avalanche: 'High', plasma: 'High' }
   ];
 
   return (
@@ -274,6 +297,7 @@ export default function NetworkSelection() {
                       <th className="text-center p-4 font-semibold bg-primary/5">Base</th>
                       <th className="text-center p-4 font-semibold">BNB Chain</th>
                       <th className="text-center p-4 font-semibold">Avalanche</th>
+                      <th className="text-center p-4 font-semibold">Plasma</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -284,6 +308,7 @@ export default function NetworkSelection() {
                         <td className="text-center p-4 bg-primary/5 font-medium">{row.base}</td>
                         <td className="text-center p-4 text-muted-foreground">{row.bnb}</td>
                         <td className="text-center p-4 text-muted-foreground">{row.avalanche}</td>
+                        <td className="text-center p-4 text-muted-foreground">{row.plasma}</td>
                       </tr>
                     ))}
                   </tbody>
