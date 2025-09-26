@@ -1,8 +1,8 @@
-# replit.md
+# xLog - Decentralized Blogging Platform
 
 ## Overview
 
-ChainBlog is a decentralized blogging platform built on Web3 technology that allows users to publish content permanently on the blockchain. The application enables content creators to write and publish blog posts across multiple EVM-compatible networks (Ethereum, Base, BNB Chain, and Avalanche), ensuring true ownership, censorship resistance, and permanent storage of their content. The platform features a modern React frontend with Web3 wallet integration and a Node.js backend that manages blog post data.
+xLog is a decentralized blogging platform built on Web3 technology that allows users to publish content permanently on the blockchain. The application enables content creators to write and publish blog posts across multiple EVM-compatible networks (Ethereum, Base, BNB Chain, and Avalanche), ensuring true ownership, censorship resistance, and permanent storage of their content. The platform features a modern React frontend with Web3 wallet integration and a Node.js backend that manages blog post data.
 
 ## User Preferences
 

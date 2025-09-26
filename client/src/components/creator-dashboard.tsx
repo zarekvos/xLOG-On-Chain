@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useAccount } from 'wagmi';
 import { BlogPost } from '@shared/schema';
+import { Link } from 'wouter';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -31,6 +33,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 
 export function CreatorDashboard() {
   const [selectedPeriod, setSelectedPeriod] = useState<'7d' | '30d' | '90d' | '1y'>('30d');
+  const { address, isConnected } = useAccount();
 
   // Fetch real user posts data
   const { data: userPosts = [], isLoading: postsLoading } = useQuery<BlogPost[]>({
@@ -136,25 +139,43 @@ export function CreatorDashboard() {
     }
   ];
 
+  // Calculate earnings based on post performance (only if wallet connected)
+  const calculateEarnings = (posts: BlogPost[]) => {
+    if (!isConnected) return 0;
+    
+    return posts.reduce((total, post) => {
+      const views = post.views || 0;
+      const likes = post.likes || 0;
+      const comments = post.comments || 0;
+      
+      // Reward calculation: $0.001 per view, $0.01 per like, $0.05 per comment
+      const viewReward = views * 0.001;
+      const likeReward = likes * 0.01;
+      const commentReward = comments * 0.05;
+      
+      return total + viewReward + likeReward + commentReward;
+    }, 0);
+  };
+
   // Calculate real stats from posts data
   const creatorStats = userPosts.length > 0 ? {
     totalViews: userPosts.reduce((sum, post) => sum + (post.views || 0), 0),
     totalLikes: userPosts.reduce((sum, post) => sum + (post.likes || 0), 0),
     totalComments: userPosts.reduce((sum, post) => sum + (post.comments || 0), 0),
     totalFollowers: 2891, // This would come from user profile API
-    totalEarnings: 1456, // This would come from monetization API
+    totalEarnings: Math.round(calculateEarnings(userPosts) * 100) / 100, // Round to 2 decimal places
     postsPublished: userPosts.length,
     averageReadTime: userPosts.reduce((sum, post) => sum + (post.readingTime || 0), 0) / userPosts.length,
     engagementRate: userPosts.length > 0 ? (userPosts.reduce((sum, post) => sum + (post.likes || 0) + (post.comments || 0), 0) / userPosts.reduce((sum, post) => sum + (post.views || 0), 0)) * 100 : 0
   } : {
     // Fallback stats when no real data
-    totalViews: 125400,
-    totalLikes: 8943,
-    totalComments: 1234,
-    totalFollowers: 2891,
-    totalEarnings: 1456,
-    postsPublished: 47,
-    averageReadTime: 6.2,
+    totalViews: isConnected ? 0 : 125400,
+    totalLikes: isConnected ? 0 : 8943,
+    totalComments: isConnected ? 0 : 1234,
+    totalFollowers: isConnected ? 0 : 2891,
+    totalEarnings: isConnected ? 0 : 0, // Always start from 0 when connected
+    postsPublished: isConnected ? 0 : 47,
+    averageReadTime: isConnected ? 0 : 6.2,
     engagementRate: 12.4
   };
 
@@ -228,17 +249,19 @@ export function CreatorDashboard() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-950/20 dark:to-orange-950/20 border-0">
-          <CardContent className="p-6 text-center">
-            <DollarSign className="w-8 h-8 text-yellow-500 mx-auto mb-3" />
-            <div className="text-2xl font-bold text-foreground">${creatorStats.totalEarnings}</div>
-            <div className="text-sm text-muted-foreground">Total Earned</div>
-          </CardContent>
-        </Card>
+        {isConnected && (
+          <Card className="bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-950/20 dark:to-orange-950/20 border-0">
+            <CardContent className="p-6 text-center">
+              <DollarSign className="w-8 h-8 text-yellow-500 mx-auto mb-3" />
+              <div className="text-2xl font-bold text-foreground">${creatorStats.totalEarnings}</div>
+              <div className="text-sm text-muted-foreground">Total Earned</div>
+            </CardContent>
+          </Card>
+        )}
       </motion.div>
 
       <Tabs defaultValue="analytics" className="space-y-8">
-        <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:grid-cols-4 bg-muted/30 p-1 rounded-2xl">
+        <TabsList className={`grid w-full ${isConnected ? 'grid-cols-4 lg:grid-cols-4' : 'grid-cols-3 lg:grid-cols-3'} bg-muted/30 p-1 rounded-2xl`}>
           <TabsTrigger value="analytics" className="rounded-xl" data-testid="tab-analytics">
             <BarChart className="w-4 h-4 mr-2" />
             Analytics
@@ -251,10 +274,12 @@ export function CreatorDashboard() {
             <Award className="w-4 h-4 mr-2" />
             Achievements
           </TabsTrigger>
-          <TabsTrigger value="monetization" className="rounded-xl" data-testid="tab-monetization">
-            <DollarSign className="w-4 h-4 mr-2" />
-            Monetization
-          </TabsTrigger>
+          {isConnected && (
+            <TabsTrigger value="monetization" className="rounded-xl" data-testid="tab-monetization">
+              <DollarSign className="w-4 h-4 mr-2" />
+              Monetization
+            </TabsTrigger>
+          )}
         </TabsList>
 
         {/* Analytics Tab */}
@@ -373,10 +398,12 @@ export function CreatorDashboard() {
           >
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold">Top Performing Content</h2>
-              <Button data-testid="button-new-post">
-                <PenTool className="w-4 h-4 mr-2" />
-                New Post
-              </Button>
+              <Link href="/create-blog">
+                <Button data-testid="button-new-post">
+                  <PenTool className="w-4 h-4 mr-2" />
+                  New Post
+                </Button>
+              </Link>
             </div>
 
             <div className="space-y-4">
@@ -486,99 +513,113 @@ export function CreatorDashboard() {
           </motion.div>
         </TabsContent>
 
-        {/* Monetization Tab */}
-        <TabsContent value="monetization" className="space-y-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-2xl font-bold mb-6">Monetization Hub</h2>
-            
-            <div className="grid md:grid-cols-3 gap-6">
-              <Card className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20">
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <DollarSign className="w-5 h-5 mr-2 text-green-500" />
-                    Total Earnings
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-green-500 mb-2">${creatorStats.totalEarnings}</div>
-                  <div className="text-sm text-muted-foreground mb-4">This month</div>
-                  <Button className="w-full" data-testid="button-withdraw">
-                    <Download className="w-4 h-4 mr-2" />
-                    Withdraw
-                  </Button>
-                </CardContent>
-              </Card>
+        {/* Monetization Tab - Only visible when wallet is connected */}
+        {isConnected && (
+          <TabsContent value="monetization" className="space-y-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <h2 className="text-2xl font-bold mb-6">Monetization Hub</h2>
+              
+              {/* Earnings Overview */}
+              <div className="grid md:grid-cols-3 gap-6 mb-6">
+                <Card className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20">
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <DollarSign className="w-5 h-5 mr-2 text-green-500" />
+                      Total Earnings
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-3xl font-bold text-green-500 mb-2">${creatorStats.totalEarnings}</div>
+                    <div className="text-sm text-muted-foreground mb-4">From blog engagement</div>
+                    <Button className="w-full" disabled={creatorStats.totalEarnings < 10} data-testid="button-withdraw">
+                      <Download className="w-4 h-4 mr-2" />
+                      {creatorStats.totalEarnings < 10 ? 'Minimum $10 to withdraw' : 'Withdraw'}
+                    </Button>
+                  </CardContent>
+                </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Target className="w-5 h-5 mr-2" />
-                    Monthly Goal
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-foreground mb-2">$2,000</div>
-                  <div className="text-sm text-muted-foreground mb-4">72.8% achieved</div>
-                  <Progress value={72.8} className="mb-4" />
-                  <div className="text-xs text-muted-foreground">$544 to go</div>
-                </CardContent>
-              </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <Target className="w-5 h-5 mr-2" />
+                      Monthly Goal
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-3xl font-bold text-foreground mb-2">$100</div>
+                    <div className="text-sm text-muted-foreground mb-4">{((creatorStats.totalEarnings / 100) * 100).toFixed(1)}% achieved</div>
+                    <Progress value={(creatorStats.totalEarnings / 100) * 100} className="mb-4" />
+                    <div className="text-xs text-muted-foreground">${Math.max(0, 100 - creatorStats.totalEarnings).toFixed(2)} to go</div>
+                  </CardContent>
+                </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <TrendingUp className="w-5 h-5 mr-2" />
-                    Growth Rate
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-blue-500 mb-2">+34%</div>
-                  <div className="text-sm text-muted-foreground mb-4">vs last month</div>
-                  <Badge className="bg-green-500 text-white">
-                    <TrendingUp className="w-3 h-3 mr-1" />
-                    Growing
-                  </Badge>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Recent Activity */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Recent Activity</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {recentActivity.map((activity, index) => (
-                    <div key={index} className="flex items-center space-x-3 p-3 rounded-lg bg-muted/30">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                        activity.type === 'like' ? 'bg-red-100 text-red-500' :
-                        activity.type === 'comment' ? 'bg-blue-100 text-blue-500' :
-                        activity.type === 'follow' ? 'bg-green-100 text-green-500' :
-                        activity.type === 'earning' ? 'bg-yellow-100 text-yellow-500' :
-                        'bg-purple-100 text-purple-500'
-                      }`}>
-                        {activity.type === 'like' && <Heart className="w-4 h-4" />}
-                        {activity.type === 'comment' && <MessageCircle className="w-4 h-4" />}
-                        {activity.type === 'follow' && <Users className="w-4 h-4" />}
-                        {activity.type === 'earning' && <DollarSign className="w-4 h-4" />}
-                        {activity.type === 'feature' && <Star className="w-4 h-4" />}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <TrendingUp className="w-5 h-5 mr-2" />
+                      Reward Rates
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span>Per View:</span>
+                        <span className="font-semibold">$0.001</span>
                       </div>
-                      <div className="flex-1">
-                        <p className="text-sm text-foreground">{activity.content}</p>
-                        <p className="text-xs text-muted-foreground">{activity.time}</p>
+                      <div className="flex justify-between">
+                        <span>Per Like:</span>
+                        <span className="font-semibold">$0.01</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Per Comment:</span>
+                        <span className="font-semibold">$0.05</span>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </TabsContent>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* How to Earn More */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>How to Earn More</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-3">
+                      <h4 className="font-semibold flex items-center">
+                        <Eye className="w-4 h-4 mr-2 text-blue-500" />
+                        Increase Views
+                      </h4>
+                      <ul className="text-sm text-muted-foreground space-y-1">
+                        <li>• Write engaging titles and descriptions</li>
+                        <li>• Share on social media platforms</li>
+                        <li>• Post consistently to build audience</li>
+                        <li>• Use trending topics and keywords</li>
+                      </ul>
+                    </div>
+                    <div className="space-y-3">
+                      <h4 className="font-semibold flex items-center">
+                        <Heart className="w-4 h-4 mr-2 text-red-500" />
+                        Get More Engagement
+                      </h4>
+                      <ul className="text-sm text-muted-foreground space-y-1">
+                        <li>• Ask questions to encourage comments</li>
+                        <li>• Respond to comments promptly</li>
+                        <li>• Create valuable, helpful content</li>
+                        <li>• Include call-to-actions in your posts</li>
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </TabsContent>
+        )}
       </Tabs>
     </div>
   );

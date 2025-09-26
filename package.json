@@ -1,14 +1,20 @@
 {
-  "name": "rest-express",
+  "name": "chainscribe",
   "version": "1.0.0",
   "type": "module",
   "license": "MIT",
+  "description": "Decentralized blogging platform on EVM chains",
+  "main": "server/index.ts",
   "scripts": {
     "dev": "NODE_ENV=development tsx server/index.ts",
-    "build": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
-    "start": "NODE_ENV=production node dist/index.js",
+    "build": "cd client && npm install && vite build",
+    "start": "NODE_ENV=production tsx server/index.ts",
+    "vercel-build": "cd client && npm install && vite build",
     "check": "tsc",
     "db:push": "drizzle-kit push"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

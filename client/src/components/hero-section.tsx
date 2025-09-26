@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { WalletConnect } from './wallet-connect';
-import { Sparkles, ArrowRight, Play } from 'lucide-react';
+import { Sparkles, ArrowRight, Play, Link as ChainIcon } from 'lucide-react';
+import { Link } from 'wouter';
 
 export function HeroSection() {
   const stats = [
@@ -152,29 +153,34 @@ export function HeroSection() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Button
-                size="lg"
-                className="group bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-primary-foreground shadow-2xl hover:shadow-3xl transition-all duration-500 hover:-translate-y-1 px-12 py-6 text-xl font-bold rounded-2xl"
-                data-testid="button-start-blogging"
-              >
-                Start Blogging
-                <ArrowRight className="w-6 h-6 ml-3 group-hover:translate-x-1 transition-transform duration-300" />
-              </Button>
+              <Link href="/dashboard">
+                <Button
+                  size="lg"
+                  className="group bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-primary-foreground shadow-2xl hover:shadow-3xl transition-all duration-500 hover:-translate-y-1 px-12 py-6 text-xl font-bold rounded-2xl"
+                  data-testid="button-start-blogging"
+                >
+                  <ChainIcon className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform duration-300" />
+                  Start Blogging
+                  <ArrowRight className="w-6 h-6 ml-3 group-hover:translate-x-1 transition-transform duration-300" />
+                </Button>
+              </Link>
             </motion.div>
             
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Button
-                variant="outline"
-                size="lg"
-                className="group border-2 border-primary/30 text-foreground hover:bg-primary/10 hover:border-primary/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 px-8 py-6 text-lg font-semibold rounded-2xl backdrop-blur-sm bg-white/10"
-                data-testid="button-watch-demo"
-              >
-                <Play className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform duration-300" />
-                Watch Demo
-              </Button>
+              <Link href="/docs">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="group border-2 border-primary/30 text-foreground hover:bg-primary/10 hover:border-primary/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 px-8 py-6 text-lg font-semibold rounded-2xl backdrop-blur-sm bg-white/10"
+                  data-testid="button-watch-demo"
+                >
+                  <Play className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform duration-300" />
+                  Watch Demo
+                </Button>
+              </Link>
             </motion.div>
             
             <div className="sm:hidden lg:block">

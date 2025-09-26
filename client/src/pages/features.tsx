@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion';
 import { Navigation } from '@/components/navigation';
 import { Footer } from '@/components/footer';
-import { Lock, Link, Shield, Zap, Users, Globe, Code, Layers, ArrowRight } from 'lucide-react';
+import { Lock, Link as LinkIcon, Shield, Zap, Users, Globe, Code, Layers, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { supportedChains } from '@/lib/wagmi';
+import { Link } from 'wouter';
 
 export default function Features() {
   const mainFeatures = [
@@ -15,7 +16,7 @@ export default function Features() {
       benefits: ['Permanent storage', 'Censorship resistant', 'Platform independent']
     },
     {
-      icon: Link,
+      icon: LinkIcon,
       title: 'Multi-Chain Support',
       description: 'Publish on Ethereum, Base, BNB Chain, and Avalanche. Choose the network that fits your needs.',
       benefits: ['Cross-chain compatibility', 'Network flexibility', 'Cost optimization']
@@ -98,7 +99,7 @@ export default function Features() {
               </span>
             </h1>
             <p className="text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Discover the cutting-edge capabilities that make ChainBlog the future of decentralized content creation
+              Discover the cutting-edge capabilities that make xLog the future of decentralized content creation
             </p>
           </motion.div>
         </div>
@@ -229,7 +230,13 @@ export default function Features() {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   whileHover={{ scale: 1.05 }}
                 >
-                  <div className={`w-12 h-12 ${chain.color} rounded-full`} />
+                  <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center">
+                    <img 
+                      src={chain.icon} 
+                      alt={`${chain.name} logo`}
+                      className="w-8 h-8 object-contain"
+                    />
+                  </div>
                   <span className="font-semibold text-foreground">{chain.name}</span>
                 </motion.div>
               ))}
@@ -254,21 +261,25 @@ export default function Features() {
               Join thousands of creators who have already embraced the future of decentralized blogging
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 px-12 py-4 text-lg font-semibold"
-                data-testid="button-start-blogging-cta"
-              >
-                Start Blogging Now
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-12 py-4 text-lg font-medium"
-                data-testid="button-view-docs-cta"
-              >
-                View Documentation
-              </Button>
+              <Link href="/create-blog">
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 px-12 py-4 text-lg font-semibold"
+                  data-testid="button-start-blogging-cta"
+                >
+                  Start Blogging Now
+                </Button>
+              </Link>
+              <Link href="/docs">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-12 py-4 text-lg font-medium"
+                  data-testid="button-view-docs-cta"
+                >
+                  View Documentation
+                </Button>
+              </Link>
             </div>
           </motion.div>
         </div>

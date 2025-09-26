@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { BlogPost } from '@shared/schema';
 import { formatDistanceToNow } from 'date-fns';
+import { Link } from 'wouter';
 
 export function BlogSection() {
   const { data: blogPosts, isLoading } = useQuery<BlogPost[]>({
@@ -106,13 +107,15 @@ export function BlogSection() {
                 <p className="text-muted-foreground mb-4 line-clamp-3">
                   {post.excerpt}
                 </p>
-                <Button
-                  variant="ghost"
-                  className="text-primary hover:text-primary/80 font-medium p-0 h-auto"
-                  data-testid={`button-read-more-${post.id}`}
-                >
-                  Read More →
-                </Button>
+                <Link href={`/posts/${post.id}`}>
+                  <Button
+                    variant="ghost"
+                    className="text-primary hover:text-primary/80 font-medium p-0 h-auto"
+                    data-testid={`button-read-more-${post.id}`}
+                  >
+                    Read More →
+                  </Button>
+                </Link>
               </CardContent>
             </motion.article>
           ))}
@@ -125,14 +128,16 @@ export function BlogSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          <Button
-            variant="outline"
-            size="lg"
-            className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-3 font-medium transition-all"
-            data-testid="button-view-all-posts"
-          >
-            View All Posts
-          </Button>
+          <Link href="/blogs">
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-3 font-medium transition-all"
+              data-testid="button-view-all-posts"
+            >
+              View All Posts
+            </Button>
+          </Link>
         </motion.div>
       </div>
     </section>

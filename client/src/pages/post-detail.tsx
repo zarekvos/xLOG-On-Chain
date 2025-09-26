@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { BlogPost } from '@shared/schema';
 import { EnhancedBlogReader } from '@/components/enhanced-blog-reader';
 import { SocialFeatures } from '@/components/social-features';
+import { Footer } from '@/components/footer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CalendarIcon, ClockIcon, EyeIcon, UserIcon } from 'lucide-react';
@@ -119,6 +120,7 @@ export default function PostDetail() {
           />
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

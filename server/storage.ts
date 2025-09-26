@@ -194,8 +194,8 @@ export class MemStorage implements IStorage {
       {
         id: randomUUID(),
         title: "Getting Started with Web3 Blogging",
-        content: "A comprehensive guide to publishing your first blog post on the blockchain using ChainBlog. Learn about wallet setup, network selection, gas optimization, and content strategies for decentralized publishing. This tutorial covers everything from technical setup to content strategy.",
-        excerpt: "A comprehensive guide to publishing your first blog post on the blockchain using ChainBlog...",
+        content: "A comprehensive guide to publishing your first blog post on the blockchain using xLog. Learn about wallet setup, network selection, gas optimization, and content strategies for decentralized publishing. This tutorial covers everything from technical setup to content strategy.",
+        excerpt: "A comprehensive guide to publishing your first blog post on the blockchain using xLog...",
         author: "0x1234567890abcdef1234567890abcdef12345678",
         authorId: undefined,
         chainId: "8453",

@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'wouter';
 import { Navigation } from '@/components/navigation';
 import { Footer } from '@/components/footer';
 import { Card, CardContent } from '@/components/ui/card';
@@ -67,7 +68,7 @@ export default function Docs() {
       color: 'from-blue-500 to-indigo-600',
       docs: [
         { title: 'API Reference', description: 'Complete API documentation and endpoints', difficulty: 'Advanced' },
-        { title: 'Smart Contract Integration', description: 'Integrate with ChainBlog contracts', difficulty: 'Advanced' },
+        { title: 'Smart Contract Integration', description: 'Integrate with xLog contracts', difficulty: 'Advanced' },
         { title: 'SDK Documentation', description: 'JavaScript/TypeScript SDK guide', difficulty: 'Intermediate' },
         { title: 'Custom Themes', description: 'Build and deploy custom blog themes', difficulty: 'Intermediate' }
       ]
@@ -177,23 +178,27 @@ export default function Docs() {
               Everything you need to build, publish, and thrive on the decentralized web
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 px-8 py-4 text-lg font-semibold"
-                data-testid="button-start-learning"
-              >
-                <BookOpen className="w-5 h-5 mr-2" />
-                Start Learning
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-4 text-lg font-medium"
-                data-testid="button-view-api-docs"
-              >
-                <Code className="w-5 h-5 mr-2" />
-                View API Docs
-              </Button>
+              <Link href="/create-blog">
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 px-8 py-4 text-lg font-semibold"
+                  data-testid="button-start-learning"
+                >
+                  <BookOpen className="w-5 h-5 mr-2" />
+                  Start Learning
+                </Button>
+              </Link>
+              <Link href="/api-references">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-4 text-lg font-medium"
+                  data-testid="button-view-api-docs"
+                >
+                  <Code className="w-5 h-5 mr-2" />
+                  View API Docs
+                </Button>
+              </Link>
             </div>
           </motion.div>
         </div>
@@ -211,7 +216,7 @@ export default function Docs() {
           >
             <h2 className="text-5xl font-bold text-foreground mb-6">Quick Start</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Get started with ChainBlog in just a few simple steps
+              Get started with xLog in just a few simple steps
             </p>
           </motion.div>
 
@@ -280,30 +285,55 @@ export default function Docs() {
                 </div>
 
                 <div className="space-y-4">
-                  {section.docs.map((doc, docIndex) => (
-                    <motion.div
-                      key={doc.title}
-                      className="group p-6 bg-card/50 border border-border/50 rounded-xl hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-                      whileHover={{ scale: 1.02 }}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: (sectionIndex * 0.1) + (docIndex * 0.05) }}
-                    >
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <h4 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
-                            {doc.title}
-                          </h4>
-                          <p className="text-muted-foreground mb-3">{doc.description}</p>
-                          <Badge className={getDifficultyColor(doc.difficulty)}>
-                            {doc.difficulty}
-                          </Badge>
+                  {section.docs.map((doc, docIndex) => {
+                    const getDocLink = (title: string) => {
+                      switch (title) {
+                        case 'Quick Start Guide': return '/docs/quick-start';
+                        case 'Wallet Setup': return '/docs/wallet-setup';
+                        case 'Network Selection': return '/docs/network-selection';
+                        case 'Publishing Your First Post': return '/docs/publishing-first-post';
+                        case 'API Reference': return '/api-references';
+                        case 'Smart Contract Integration': return '/docs/smart-contract-integration';
+                        case 'SDK Documentation': return '/docs/sdk-documentation';
+                        case 'Custom Themes': return '/docs/custom-themes';
+                        case 'Content Management': return '/docs/content-management';
+                        case 'Multi-Chain Publishing': return '/docs/multi-chain-publishing';
+                        case 'Content Monetization': return '/docs/content-monetization';
+                        case 'Community Features': return '/docs/community-features';
+                        case 'Gas Optimization': return '/docs/gas-optimization';
+                        case 'IPFS Integration': return '/docs/ipfs-integration';
+                        case 'Custom Smart Contracts': return '/docs/custom-smart-contracts';
+                        case 'Cross-Chain Bridging': return '/docs/cross-chain-bridging';
+                        default: return '/create-blog';
+                      }
+                    };
+
+                    return (
+                      <Link key={doc.title} href={getDocLink(doc.title)}>
+                        <motion.div
+                          className="group p-6 bg-card/50 border border-border/50 rounded-xl hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                          whileHover={{ scale: 1.02 }}
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.5, delay: (sectionIndex * 0.1) + (docIndex * 0.05) }}
+                        >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <h4 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
+                              {doc.title}
+                            </h4>
+                            <p className="text-muted-foreground mb-3">{doc.description}</p>
+                            <Badge className={getDifficultyColor(doc.difficulty)}>
+                              {doc.difficulty}
+                            </Badge>
+                          </div>
+                          <ExternalLink className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
                         </div>
-                        <ExternalLink className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
-                      </div>
-                    </motion.div>
-                  ))}
+                      </motion.div>
+                      </Link>
+                    );
+                  })}
                 </div>
               </motion.div>
             ))}
@@ -328,16 +358,33 @@ export default function Docs() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {resources.map((resource, index) => (
-              <motion.div
-                key={resource.title}
-                className="group"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Card className="p-8 h-full bg-card/80 backdrop-blur-sm border-border/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-2 cursor-pointer">
+            {resources.map((resource, index) => {
+              const getResourceLink = (title: string) => {
+                switch (title) {
+                  case 'API Reference': return '/api-references';
+                  case 'SDK Libraries': return '/docs';
+                  case 'Code Examples': return '/create-blog';
+                  case 'Community': return 'https://discord.gg/xlog';
+                  default: return '/docs';
+                }
+              };
+              
+              const ResourceWrapper = resource.external ? 'a' : Link;
+              const linkProps = resource.external 
+                ? { href: getResourceLink(resource.title), target: '_blank', rel: 'noopener noreferrer' }
+                : { href: getResourceLink(resource.title) };
+              
+              return (
+                <motion.div
+                  key={resource.title}
+                  className="group"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                >
+                  <ResourceWrapper {...linkProps}>
+                    <Card className="p-8 h-full bg-card/80 backdrop-blur-sm border-border/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-2 cursor-pointer">
                   <CardContent className="p-0 text-center">
                     <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-blue-600/20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                       <resource.icon className="w-8 h-8 text-primary" />
@@ -356,8 +403,10 @@ export default function Docs() {
                     </div>
                   </CardContent>
                 </Card>
+                  </ResourceWrapper>
               </motion.div>
-            ))}
+                );
+              })}
           </div>
         </div>
       </section>
@@ -378,17 +427,20 @@ export default function Docs() {
               Join our community of developers building the future of decentralized publishing
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 px-12 py-4 text-lg font-semibold"
-              >
-                <Rocket className="w-5 h-5 mr-2" />
-                Get Started
-              </Button>
+              <Link href="/create-blog">
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 px-12 py-4 text-lg font-semibold"
+                >
+                  <Rocket className="w-5 h-5 mr-2" />
+                  Get Started
+                </Button>
+              </Link>
               <Button
                 variant="outline"
                 size="lg"
                 className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-12 py-4 text-lg font-medium"
+                onClick={() => window.open('https://github.com/xlog-app', '_blank')}
               >
                 <Github className="w-5 h-5 mr-2" />
                 View on GitHub

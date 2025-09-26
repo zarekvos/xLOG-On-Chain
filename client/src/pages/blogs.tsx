@@ -9,9 +9,10 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { BlogPost } from '@shared/schema';
 import { formatDistanceToNow } from 'date-fns';
-import { Search, Filter, TrendingUp, Clock, User, ExternalLink, Sparkles } from 'lucide-react';
+import { Search, Filter, TrendingUp, Clock, User, ExternalLink, Sparkles, Link as ChainIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useLocation } from 'wouter';
+import { supportedChains } from '@/lib/wagmi';
 
 export default function Blogs() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -54,12 +55,12 @@ export default function Blogs() {
     return matchesSearch && matchesChain;
   });
 
-  const chains = [
-    { id: '1', name: 'Ethereum', color: 'bg-blue-500' },
-    { id: '8453', name: 'Base', color: 'bg-blue-600' },
-    { id: '56', name: 'BNB Chain', color: 'bg-yellow-500' },
-    { id: '43114', name: 'Avalanche', color: 'bg-red-500' },
-  ];
+  const chains = supportedChains.map(chain => ({
+    id: chain.id.toString(),
+    name: chain.name,
+    color: chain.color,
+    icon: chain.icon
+  }));
 
   return (
     <div className="min-h-screen bg-background">
@@ -97,8 +98,9 @@ export default function Blogs() {
                 variant={selectedChain === null ? "default" : "outline"}
                 size="sm"
                 onClick={() => setSelectedChain(null)}
-                className="transition-all duration-200"
+                className="flex items-center gap-2 transition-all duration-200"
               >
+                <ChainIcon className="w-4 h-4" />
                 All Chains
               </Button>
               {chains.map(chain => (
@@ -109,7 +111,11 @@ export default function Blogs() {
                   onClick={() => setSelectedChain(chain.id)}
                   className="flex items-center gap-2 transition-all duration-200"
                 >
-                  <div className={`w-3 h-3 ${chain.color} rounded-full`} />
+                  <img 
+                    src={chain.icon} 
+                    alt={`${chain.name} logo`}
+                    className="w-4 h-4 object-contain"
+                  />
                   {chain.name}
                 </Button>
               ))}

@@ -79,7 +79,7 @@ export function FeaturesSection() {
           
           <h2 className="text-5xl md:text-6xl font-bold text-foreground mb-6">
             Why Choose 
-            <span className="bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent"> ChainBlog</span>?
+            <span className="bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent"> xLog</span>?
           </h2>
           <p className="text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Experience true digital ownership with our decentralized blogging platform
@@ -188,12 +188,18 @@ export function FeaturesSection() {
                   }}
                 >
                   <motion.div 
-                    className={`w-12 h-12 ${chain.color} rounded-full shadow-lg`}
+                    className="w-12 h-12 rounded-full shadow-lg flex items-center justify-center bg-white/10 backdrop-blur-sm border border-white/20"
                     whileHover={{ 
                       scale: 1.2,
                       boxShadow: "0 10px 20px rgba(0,0,0,0.2)"
                     }}
-                  />
+                  >
+                    <img 
+                      src={chain.icon} 
+                      alt={`${chain.name} logo`}
+                      className="w-8 h-8 object-contain"
+                    />
+                  </motion.div>
                   <span className="font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
                     {chain.name}
                   </span>
