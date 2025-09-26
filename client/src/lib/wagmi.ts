@@ -1,5 +1,6 @@
 import { getDefaultConfig } from '@rainbow-me/rainbowkit';
-import { mainnet, base, bsc, avalanche, defineChain } from 'viem/chains';
+import { mainnet, base, bsc, avalanche } from 'viem/chains';
+import { defineChain } from 'viem';
 import ethIcon from '@assets/eth.png';
 import baseIcon from '@assets/base.png';
 import bnbIcon from '@assets/bnb.png';
